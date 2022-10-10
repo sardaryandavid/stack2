@@ -1,11 +1,13 @@
-#pragma once
+#ifndef STACK_H
+#define STACK_H
+
 #include <cstddef>
 #include "Stack.h"
 #include <iostream>
 
 namespace containers 
 {
-    const int BITS_IN_BYTE = 8;
+    static const int BITS_IN_BYTE = 8;
 
     template <typename T>
     class Stack
@@ -319,3 +321,5 @@ void containers::Stack<bool>::pop ()
 
     --size_;
 }
+
+#endif 
