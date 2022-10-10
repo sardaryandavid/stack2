@@ -84,7 +84,6 @@ containers::Stack<T>::Stack (size_t mx_size)
     mx_size_ = mx_size;
     size_ = 0;
     data_ = new T[mx_size];
-    std::cout << data_ << std::endl;
 }
 
 template <typename T>
@@ -299,7 +298,7 @@ void containers::Stack<bool>::push (const unsigned char& val)
     {
         std::cout << "Stack is full" << std::endl;
         exit (EXIT_FAILURE);
-    }   
+    }
 
     size_++;
 
