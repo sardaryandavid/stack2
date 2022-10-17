@@ -11,11 +11,9 @@ if(NOT CMAKE_CXX_EXTENSIONS)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-#set(SOURCE_LIB src/Stack.cpp)
 set(SOURCE_EXE tests/tests.cpp)
-
+include_directories(include)
 add_executable(test ${SOURCE_EXE})
-#add_library(Stack STATIC ${SOURCE_LIB})
 
 # To add:
 # cmake . -DSANITAIZER=ON
@@ -27,4 +25,21 @@ if(NOT SANITAIZER)
     target_link_options(test PUBLIC -fsanitize=undefined)
 endif()
 
+set (CLANG_TIDY_FLAGS
+    clang-tydy;
+    -checks=*
+    -header-filter=.;
+    -warnings-as-errors=*;
+    )
+
+set_target_properties (test PROPERTIES CMAKE_CXX_CLANG_TIDY "{CLANG_TIDY_FLAGS}")
+file (GLOB_RECURSE ALL_SOURCE_FILES tests/*.cpp include/*.h)
+add_custom_target(
+    clang_format
+    COMMAND clang-clang_format
+    -i
+    tests/*.cpp include/*.h
+)
+
+set(CMAKE_CXX_CLANG_TIDY "clang-tidy-12;-checks=-*,-warnings-as-errors=*, google-readability-todo; --header-filter=.*")
 target_link_libraries(test gtest pthread)
