@@ -18,6 +18,7 @@ add_executable(test ${SOURCE_EXE})
 # To add:
 # cmake . -DSANITAIZER=ON
 # cmake ---build .
+
 if(NOT SANITAIZER)
     target_compile_options(test PRIVATE -fsanitize=address)
     target_link_options(test PRIVATE -fsanitize=address)
@@ -26,7 +27,7 @@ if(NOT SANITAIZER)
 endif()
 
 set (CLANG_TIDY_FLAGS
-    clang-tydy;
+     clang-tidy;
     -checks=*
     -header-filter=.;
     -warnings-as-errors=*;
@@ -34,6 +35,7 @@ set (CLANG_TIDY_FLAGS
 
 set_target_properties (test PROPERTIES CMAKE_CXX_CLANG_TIDY "{CLANG_TIDY_FLAGS}")
 file (GLOB_RECURSE ALL_SOURCE_FILES tests/*.cpp include/*.h)
+
 add_custom_target(
     clang_format
     COMMAND clang-clang_format
@@ -41,5 +43,4 @@ add_custom_target(
     tests/*.cpp include/*.h
 )
 
-set(CMAKE_CXX_CLANG_TIDY "clang-tidy-12;-checks=-*,-warnings-as-errors=*, google-readability-todo; --header-filter=.*")
 target_link_libraries(test gtest pthread)
