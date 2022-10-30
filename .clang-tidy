@@ -1,6 +1,4 @@
----
 WarningsAsErrors: "*"
-HeaderFilterRegex: '.*/(include|tests)/.*'
 AnalyzeTemporaryDtors: false
 User: user
 CheckOptions:

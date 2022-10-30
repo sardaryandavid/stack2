@@ -13,24 +13,24 @@ class Stack {
 public:
     Stack();
     Stack(size_t mx_size);
-    Stack(const Stack& stack);
-    Stack(Stack&& stack);
+    Stack(const Stack &stack);
+    Stack(Stack &&stack);
     ~Stack();
 
-    void push(const T& val);
+    void push(const T &val);
     void pop();
 
-    Stack& operator=(const Stack&);
-    Stack& operator=(Stack&&);
+    Stack &operator=(const Stack &);
+    Stack &operator=(Stack &&);
 
     int isFull() const;
     int isEmpty() const;
     size_t get_size() const;
     size_t get_mx_size() const;
-    T get_elem(int num) const;
+    T get_elem(size_t num) const;
 
 private:
-    T* data_;
+    T *data_;
     size_t mx_size_;
     size_t size_;
 };
@@ -40,30 +40,30 @@ class Stack<bool> {
 public:
     Stack();
     Stack(size_t mx_size);
-    Stack(const Stack& stack);
-    Stack(Stack&& stack);
+    Stack(const Stack &stack);
+    Stack(Stack &&stack);
     ~Stack();
 
-    void push(const uint8_t& val);
+    void push(const uint8_t &val);
     void pop();
 
-    Stack& operator=(const Stack&);
-    Stack& operator=(Stack&&);
+    Stack &operator=(const Stack &);
+    Stack &operator=(Stack &&);
 
     int isFull() const;
     int isEmpty() const;
     size_t get_size() const;
     size_t get_mx_size() const;
-    uint8_t get_elem(int num) const;
+    uint8_t get_elem(size_t num) const;
 
     static size_t bits_to_bytes(size_t);
 
 private:
-    uint8_t* data_;
+    uint8_t *data_;
     size_t mx_size_;
     size_t size_;
 };
-}
+}  // namespace containers
 
 template <typename T>
 containers::Stack<T>::Stack()
@@ -82,7 +82,7 @@ containers::Stack<T>::Stack(size_t mx_size)
 }
 
 template <typename T>
-containers::Stack<T>::Stack(const Stack& stack)
+containers::Stack<T>::Stack(const Stack &stack)
 {
     data_ = new T[stack.mx_size];
     size_ = stack.size_;
@@ -92,7 +92,7 @@ containers::Stack<T>::Stack(const Stack& stack)
 }
 
 template <typename T>
-containers::Stack<T>::Stack(Stack&& stack)
+containers::Stack<T>::Stack(Stack &&stack)
 {
     data_ = stack.data_;
     size_ = stack.size_;
@@ -107,7 +107,7 @@ containers::Stack<T>::~Stack()
 }
 
 template <typename T>
-containers::Stack<T>& containers::Stack<T>::operator=(const Stack& stack)
+containers::Stack<T> &containers::Stack<T>::operator=(const Stack &stack)
 {
     if (this == &stack)
         return *this;
@@ -122,7 +122,7 @@ containers::Stack<T>& containers::Stack<T>::operator=(const Stack& stack)
 }
 
 template <typename T>
-containers::Stack<T>& containers::Stack<T>::operator=(Stack&& stack)
+containers::Stack<T> &containers::Stack<T>::operator=(Stack &&stack)
 {
     data_ = stack.data_;
     mx_size_ = stack.mx_size_;
@@ -159,9 +159,12 @@ containers::Stack<bool>::Stack(size_t mx_size)
 
     size_t size_in_bytes = bits_to_bytes(mx_size);
     data_ = new uint8_t[size_in_bytes];
+
+    for (size_t i = 0; i < size_in_bytes; ++i)
+        data_[i] = 0;
 }
 
-containers::Stack<bool>::Stack(const Stack& stack)
+containers::Stack<bool>::Stack(const Stack &stack)
 {
     data_ = new uint8_t[stack.mx_size_];
     size_ = stack.size_;
@@ -170,7 +173,7 @@ containers::Stack<bool>::Stack(const Stack& stack)
         data_[i] = stack.data_[i];
 }
 
-containers::Stack<bool>::Stack(Stack&& stack)
+containers::Stack<bool>::Stack(Stack &&stack)
 {
     data_ = stack.data_;
     size_ = stack.size_;
@@ -183,7 +186,7 @@ containers::Stack<bool>::~Stack()
     delete[] data_;
 }
 
-containers::Stack<bool>& containers::Stack<bool>::operator=(const Stack& stack)
+containers::Stack<bool> &containers::Stack<bool>::operator=(const Stack &stack)
 {
     if (this == &stack)
         return *this;
@@ -191,13 +194,14 @@ containers::Stack<bool>& containers::Stack<bool>::operator=(const Stack& stack)
     mx_size_ = stack.mx_size_;
     size_ = stack.size_;
 
-    for (size_t i = 0; i < size_; ++i)
+    size_t size_in_bytes = bits_to_bytes(size_);
+    for (size_t i = 0; i < size_in_bytes; ++i)
         data_[i] = stack.data_[i];
 
     return *this;
 }
 
-containers::Stack<bool>& containers::Stack<bool>::operator=(Stack&& stack)
+containers::Stack<bool> &containers::Stack<bool>::operator=(Stack &&stack)
 {
     data_ = stack.data_;
     mx_size_ = stack.mx_size_;
@@ -222,7 +226,7 @@ size_t containers::Stack<T>::get_mx_size() const
 }
 
 template <typename T>
-T containers::Stack<T>::get_elem(int num) const
+T containers::Stack<T>::get_elem(size_t num) const
 {
     return this->data_[num];
 }
@@ -249,7 +253,7 @@ size_t containers::Stack<bool>::get_mx_size() const
     return this->mx_size_;
 }
 
-uint8_t containers::Stack<bool>::get_elem(int num) const
+uint8_t containers::Stack<bool>::get_elem(size_t num) const
 {
     return this->data_[num];
 }
@@ -267,7 +271,7 @@ int containers::Stack<bool>::isEmpty() const
 /*****************************************/
 
 template <typename T>
-void containers::Stack<T>::push(const T& val)
+void containers::Stack<T>::push(const T &val)
 {
     if (this->isFull()) {
         std::cout << "Stack is full" << std::endl;
@@ -288,7 +292,7 @@ void containers::Stack<T>::pop()
     --size_;
 }
 
-void containers::Stack<bool>::push(const uint8_t& val)
+void containers::Stack<bool>::push(const uint8_t &val)
 {
     if (this->isFull()) {
         std::cout << "Stack is full" << std::endl;
@@ -300,8 +304,11 @@ void containers::Stack<bool>::push(const uint8_t& val)
     int byte_num = containers::Stack<bool>::bits_to_bytes(size_) - 1;
     int curr_pos = (size_ - 1) % containers::BITS_IN_BYTE;
 
-    if (val == 1)
-        data_[byte_num] += (1 << (containers::BITS_IN_BYTE - curr_pos - 1));
+    if (val == 1) {
+        uint8_t val = 1;
+        val = val << (containers::BITS_IN_BYTE - curr_pos - 1);
+        data_[byte_num] += val;
+    }
 }
 
 void containers::Stack<bool>::pop()

@@ -4,9 +4,9 @@
 
 TEST(stackTest, get_size)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<int> stack { mx_size };
+    containers::Stack<int> stack {mx_size};
     stack.push(val);
 
     ASSERT_TRUE(stack.get_size() == 1);
@@ -15,7 +15,7 @@ TEST(stackTest, get_size)
 TEST(stackTest, get_mx_size)
 {
     const size_t mx_size = 10;
-    containers::Stack<int> stack { mx_size };
+    containers::Stack<int> stack {mx_size};
 
     ASSERT_TRUE(stack.get_mx_size() == mx_size);
 }
@@ -24,7 +24,7 @@ TEST(stackTest, push)
 {
     int val = 5;
     const int mx_size = 10;
-    containers::Stack<int> stack { mx_size };
+    containers::Stack<int> stack {mx_size};
 
     for (int i = 0; i < mx_size; ++i)
         stack.push(val + i);
@@ -35,9 +35,9 @@ TEST(stackTest, push)
 
 TEST(stackTest, pop)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<int> stack { mx_size };
+    containers::Stack<int> stack {mx_size};
     stack.push(val);
     stack.pop();
 
@@ -46,9 +46,9 @@ TEST(stackTest, pop)
 
 TEST(stackTest, isFull)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<int> stack { mx_size };
+    containers::Stack<int> stack {mx_size};
 
     for (size_t i = 0; i < mx_size; ++i)
         stack.push(val + i);
@@ -59,17 +59,17 @@ TEST(stackTest, isFull)
 TEST(stackTest, isEmpty)
 {
     const size_t mx_size = 10;
-    containers::Stack<int> stack { mx_size };
+    containers::Stack<int> stack {mx_size};
 
     ASSERT_TRUE(stack.isEmpty() == 1);
 }
 
 TEST(stackTest, operator_assign)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<int> stack1 { mx_size };
-    containers::Stack<int> stack2 { mx_size };
+    containers::Stack<int> stack1 {mx_size};
+    containers::Stack<int> stack2 {mx_size};
 
     for (size_t i = 0; i < mx_size; ++i)
         stack1.push(val + i);
@@ -84,9 +84,9 @@ TEST(stackTest, operator_assign)
 
 TEST(stackTest, move_operator_assign)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<int> stack2 { mx_size };
+    containers::Stack<int> stack2 {mx_size};
 
     for (size_t i = 0; i < mx_size; ++i)
         stack2.push(val + i);
@@ -99,13 +99,27 @@ TEST(stackTest, move_operator_assign)
         ASSERT_TRUE(stack1.get_elem(i) == stack1.get_elem(i));
 }
 
+TEST(stackTest, big_data)
+{
+    int val = 5;
+    const size_t mx_size = 1000000;
+    containers::Stack<int> stack1 {mx_size};
+
+    for (size_t i = 0; i < mx_size; ++i)
+        stack1.push(val + i);
+
+    ASSERT_TRUE(stack1.get_size() == mx_size);
+    for (size_t i = 0; i < mx_size; ++i)
+        ASSERT_TRUE(stack1.get_elem(i) == static_cast<int>(val + i));
+}
+
 /**************************************/
 
 TEST(boolStackTest, get_size_bool)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<bool> stack { mx_size };
+    containers::Stack<bool> stack {mx_size};
     stack.push(val);
 
     ASSERT_TRUE(stack.get_size() == 1);
@@ -114,16 +128,16 @@ TEST(boolStackTest, get_size_bool)
 TEST(boolStackTest, get_mx_size_bool)
 {
     const size_t mx_size = 10;
-    containers::Stack<bool> stack { mx_size };
+    containers::Stack<bool> stack {mx_size};
 
     ASSERT_TRUE(stack.get_mx_size() == mx_size);
 }
 
 TEST(boolStackTest, push_bool)
 {
-    int val = 1;
+    size_t val = 1;
     const int mx_size = 10;
-    containers::Stack<bool> stack { mx_size };
+    containers::Stack<bool> stack {mx_size};
 
     for (int i = 0; i < mx_size; ++i)
         stack.push(val);
@@ -134,9 +148,9 @@ TEST(boolStackTest, push_bool)
 
 TEST(boolStackTest, pop_bool)
 {
-    int val = 5;
+    size_t val = 5;
     const size_t mx_size = 10;
-    containers::Stack<bool> stack { mx_size };
+    containers::Stack<bool> stack {mx_size};
     stack.push(val);
     stack.pop();
 
@@ -145,9 +159,9 @@ TEST(boolStackTest, pop_bool)
 
 TEST(boolStackTest, isFull_bool)
 {
-    int val = 1;
+    size_t val = 1;
     const size_t mx_size = 10;
-    containers::Stack<bool> stack { mx_size };
+    containers::Stack<bool> stack {mx_size};
 
     for (size_t i = 0; i < mx_size; ++i)
         stack.push(val);
@@ -158,17 +172,17 @@ TEST(boolStackTest, isFull_bool)
 TEST(boolStackTest, isEmpty_bool)
 {
     const size_t mx_size = 10;
-    containers::Stack<bool> stack { mx_size };
+    containers::Stack<bool> stack {mx_size};
 
     ASSERT_TRUE(stack.isEmpty() == 1);
 }
 
 TEST(boolStackTest, operator_assign_bool)
 {
-    int val = 1;
+    size_t val = 1;
     const size_t mx_size = 10;
-    containers::Stack<bool> stack1 { mx_size };
-    containers::Stack<bool> stack2 { mx_size };
+    containers::Stack<bool> stack1 {mx_size};
+    containers::Stack<bool> stack2 {mx_size};
 
     for (size_t i = 0; i < mx_size; ++i)
         stack1.push(val);
@@ -183,9 +197,9 @@ TEST(boolStackTest, operator_assign_bool)
 
 TEST(boolStackTest, move_operator_assign_bool)
 {
-    int val = 1;
+    size_t val = 1;
     const size_t mx_size = 10;
-    containers::Stack<bool> stack2 { mx_size };
+    containers::Stack<bool> stack2 {mx_size};
 
     for (size_t i = 0; i < mx_size; ++i)
         stack2.push(val);
@@ -194,11 +208,27 @@ TEST(boolStackTest, move_operator_assign_bool)
 
     ASSERT_TRUE(stack1.get_mx_size() == stack2.get_mx_size() && stack1.get_size() == stack2.get_size());
 
-    for (size_t i = 0; i < containers::Stack<bool>::bits_to_bytes(mx_size); ++i)
+    size_t bytes_in_stack = containers::Stack<bool>::bits_to_bytes(mx_size);
+    for (size_t i = 0; i < bytes_in_stack; ++i)
         ASSERT_TRUE(stack1.get_elem(i) == stack1.get_elem(i));
 }
 
-int main(int argc, char** argv)
+TEST(boolStackTest, big_data)
+{
+    const size_t mx_size = 1000000;
+    containers::Stack<bool> stack1 {mx_size};
+
+    for (size_t i = 0; i < mx_size; ++i)
+        stack1.push(1);
+
+    ASSERT_TRUE(stack1.get_size() == mx_size);
+
+    size_t bytes_in_stack = containers::Stack<bool>::bits_to_bytes(mx_size);
+    for (size_t i = 0; i < bytes_in_stack; ++i)
+        ASSERT_TRUE(stack1.get_elem(i) == 255);
+}
+
+int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
 

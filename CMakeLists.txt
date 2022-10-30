@@ -16,9 +16,12 @@ if(NOT CMAKE_CXX_EXTENSIONS)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-set(SOURCE_EXE tests/tests.cpp)
+set(SOURCE_EXE ../tests/tests.cpp)
+set(INCLUDE ../include)
 include_directories(include)
 add_executable(test ${SOURCE_EXE})
+set(TEST test)
+target_link_libraries(${TEST} gtest pthread)
 
 # To add:
 # cmake -DADD_SANITAIZER=ON ..
@@ -26,22 +29,26 @@ add_executable(test ${SOURCE_EXE})
 
 if(ADD_SANITAIZER)
     message ("Build with sanitaizers")
-    target_compile_options(test PRIVATE -fsanitize=address)
-    target_link_options(test PRIVATE -fsanitize=address)
-    target_compile_options(test PUBLIC -fsanitize=undefined)
-    target_link_options(test PUBLIC -fsanitize=undefined)
+    target_compile_options(${TEST} PRIVATE -fsanitize=address)
+    target_link_options(${TEST} PRIVATE -fsanitize=address)
+    target_compile_options(${TEST} PUBLIC -fsanitize=undefined)
+    target_link_options(${TEST} PUBLIC -fsanitize=undefined)
 endif()
 
 if(ADD_CLANG_TIDY)
     message ("Build with clang-tidy")
-    set (CLANG_TIDY_FLAGS
-         clang-tidy;
-         -checks=*;
-         -header-filter=.;
-         -warnings-as-errors=*;
-        )
+    # set (CLANG_TIDY_FLAGS
+    #      clang-tidy;
+    #      -checks=*;
+    #      -header-filter=.;
+    #      -warnings-as-errors=*;
+    #     )
 
-    set_target_properties (test PROPERTIES CXX_CLANG_TIDY "{CLANG_TIDY_FLAGS}")
+    # set_target_properties (${TEST} PROPERTIES CXX_CLANG_TIDY "{CLANG_TIDY_FLAGS}")
+    add_custom_target (
+                clang_tidy
+                COMMAND clang-tidy -warnings-as-errors=* ${SOURCE_EXE} -- -DDEBUG -I${INCLUDE}
+                )
 endif()
 
 if(ADD_CLANG_FORMAT)
@@ -54,5 +61,3 @@ if(ADD_CLANG_FORMAT)
         ${ALL_SOURCE_FILES}
     )
 endif()
-
-target_link_libraries(test gtest pthread)
