@@ -26,7 +26,7 @@ public:
     
 private:
     uint8_t *data_;
-    size_t mx_size_;
+    size_t capacity;
     size_t size_;
 };
 }  // namespace containers
@@ -45,13 +45,13 @@ size_t containers::Stack<bool>::bits_to_bytes(size_t mx_size)
 containers::Stack<bool>::Stack()
 {
     data_ = nullptr;
-    mx_size_ = 0;
+    capacity = 0;
     size_ = 0;
 }
 
 containers::Stack<bool>::Stack(size_t mx_size)
 {
-    mx_size_ = containers::Stack<bool>::bits_to_bytes(mx_size) * CHAR_BIT;
+    capacity = containers::Stack<bool>::bits_to_bytes(mx_size) * CHAR_BIT;
     size_ = 0;
 
     size_t size_in_bytes = bits_to_bytes(mx_size);
@@ -63,7 +63,7 @@ containers::Stack<bool>::Stack(size_t mx_size)
 
 containers::Stack<bool>::Stack(const Stack &stack)
 {
-    data_ = new uint8_t[stack.mx_size_];
+    data_ = new uint8_t[stack.capacity];
     size_ = stack.size_;
 
     for (size_t i = 0; i < stack.size_; ++i)
@@ -74,7 +74,7 @@ containers::Stack<bool>::Stack(Stack &&stack)
 {
     data_ = stack.data_;
     size_ = stack.size_;
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
     stack.data_ = nullptr;
 }
 
@@ -88,7 +88,7 @@ containers::Stack<bool> &containers::Stack<bool>::operator=(const Stack &stack)
     if (this == &stack)
         return *this;
 
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
     size_ = stack.size_;
 
     size_t size_in_bytes = bits_to_bytes(size_);
@@ -101,7 +101,7 @@ containers::Stack<bool> &containers::Stack<bool>::operator=(const Stack &stack)
 containers::Stack<bool> &containers::Stack<bool>::operator=(Stack &&stack)
 {
     data_ = stack.data_;
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
     size_ = stack.size_;
 
     stack.data_ = nullptr;
@@ -115,7 +115,7 @@ size_t containers::Stack<bool>::get_size() const
 
 size_t containers::Stack<bool>::get_mx_size() const
 {
-    return this->mx_size_;
+    return this->capacity;
 }
 
 uint8_t containers::Stack<bool>::get_top() const
@@ -126,7 +126,7 @@ uint8_t containers::Stack<bool>::get_top() const
 
 int containers::Stack<bool>::isFull() const
 {
-    return (size_ == containers::Stack<bool>::bits_to_bytes(mx_size_) * CHAR_BIT) ? true : false;
+    return (size_ == containers::Stack<bool>::bits_to_bytes(capacity) * CHAR_BIT) ? true : false;
 }
 
 int containers::Stack<bool>::isEmpty() const
@@ -137,7 +137,7 @@ int containers::Stack<bool>::isEmpty() const
 void containers::Stack<bool>::push(const uint8_t &val)
 {
     if (this->isFull()) {
-        size_t newSize = static_cast<size_t>(containers::EXP_COEFF * mx_size_);
+        size_t newSize = static_cast<size_t>(containers::EXP_COEFF * capacity);
         this->resize(newSize);
     }
 
@@ -175,5 +175,5 @@ void containers::Stack<bool>::resize(size_t newSize)
     for (size_t i = oldSizeInBytes; i < newSizeInBytes; ++i)
         data_[i] = 0;
 
-    mx_size_ = newSizeInBytes * CHAR_BIT;
+    capacity = newSizeInBytes * CHAR_BIT;
 }

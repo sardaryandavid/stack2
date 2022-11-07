@@ -33,7 +33,7 @@ public:
 
 private:
     T *data_;
-    size_t mx_size_;
+    size_t capacity;
     size_t size_;
 };
 }  // namespace containers
@@ -42,14 +42,14 @@ template <typename T>
 containers::Stack<T>::Stack()
 {
     data_ = nullptr;
-    mx_size_ = 0;
+    capacity = 0;
     size_ = 0;
 }
 
 template <typename T>
 containers::Stack<T>::Stack(size_t mx_size)
 {
-    mx_size_ = mx_size;
+    capacity = mx_size;
     size_ = 0;
     data_ = new T[mx_size];
 }
@@ -59,7 +59,7 @@ containers::Stack<T>::Stack(const Stack &stack)
 {
     data_ = new T[stack.mx_size];
     size_ = stack.size_;
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
 
     for (int i = 0; i < stack.size_; ++i)
         data_[i] = stack.data_[i];
@@ -70,7 +70,7 @@ containers::Stack<T>::Stack(Stack &&stack)
 {
     data_ = stack.data_;
     size_ = stack.size_;
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
     stack.data_ = nullptr;
 }
 
@@ -86,7 +86,7 @@ containers::Stack<T> &containers::Stack<T>::operator=(const Stack &stack)
     if (this == &stack)
         return *this;
 
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
     size_ = stack.size_;
 
     for (size_t i = 0; i < size_; ++i)
@@ -99,7 +99,7 @@ template <typename T>
 containers::Stack<T> &containers::Stack<T>::operator=(Stack &&stack)
 {
     data_ = stack.data_;
-    mx_size_ = stack.mx_size_;
+    capacity = stack.capacity;
     size_ = stack.size_;
 
     stack.data_ = nullptr;
@@ -115,7 +115,7 @@ size_t containers::Stack<T>::get_size() const
 template <typename T>
 size_t containers::Stack<T>::get_mx_size() const
 {
-    return this->mx_size_;
+    return this->capacity;
 }
 
 template <typename T>
@@ -127,7 +127,7 @@ T containers::Stack<T>::get_top() const
 template <typename T>
 int containers::Stack<T>::isFull() const
 {
-    return (this->size_ == this->mx_size_) ? true : false;
+    return (this->size_ == this->capacity) ? true : false;
 }
 
 template <typename T>
@@ -140,7 +140,7 @@ template <typename T>
 void containers::Stack<T>::push(const T &val)
 {
     if (this->isFull()) {
-        size_t newSize = static_cast<size_t>(containers::EXP_COEFF * mx_size_);
+        size_t newSize = static_cast<size_t>(containers::EXP_COEFF * capacity);
         this->resize(newSize);
     }
 
@@ -159,10 +159,10 @@ template <typename T>
 void containers::Stack<T>::resize(size_t newSize)
 {
     T *newData = new T[newSize];
-    std::copy(data_, data_ + mx_size_ - 1, newData);
+    std::copy(data_, data_ + capacity - 1, newData);
     delete[] data_;
     data_ = newData;
-    mx_size_ = newSize;
+    capacity = newSize;
 }
 
 #endif
