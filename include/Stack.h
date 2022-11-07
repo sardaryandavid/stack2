@@ -159,9 +159,13 @@ template <typename T>
 void containers::Stack<T>::resize(size_t newSize)
 {
     T *newData = new T[newSize];
-    std::copy(data_, data_ + capacity - 1, newData);
+    std::copy(data_, data_ + capacity, newData);
     delete[] data_;
     data_ = newData;
+
+    for (size_t i = size_; i < capacity; ++i)
+        data_[i] = 0;
+
     capacity = newSize;
 }
 
