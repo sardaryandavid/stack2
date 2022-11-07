@@ -20,7 +20,7 @@ public:
 
     void push(const T &val);
     void pop();
-    void resize (size_t);
+    void resize(size_t);
 
     Stack &operator=(const Stack &);
     Stack &operator=(Stack &&);
@@ -36,7 +36,7 @@ private:
     size_t mx_size_;
     size_t size_;
 };
-}
+}  // namespace containers
 
 template <typename T>
 containers::Stack<T>::Stack()
@@ -140,8 +140,8 @@ template <typename T>
 void containers::Stack<T>::push(const T &val)
 {
     if (this->isFull()) {
-        size_t newSize = static_cast<size_t> (containers::EXP_COEFF * mx_size_);
-        this->resize (newSize);
+        size_t newSize = static_cast<size_t>(containers::EXP_COEFF * mx_size_);
+        this->resize(newSize);
     }
 
     data_[size_++] = val;
@@ -156,11 +156,11 @@ void containers::Stack<T>::pop()
 }
 
 template <typename T>
-void containers::Stack<T>::resize (size_t newSize) 
+void containers::Stack<T>::resize(size_t newSize)
 {
-    T* newData = new T[newSize];
-    std::copy (data_, data_ + mx_size_ - 1, newData);
-    delete [] data_;
+    T *newData = new T[newSize];
+    std::copy(data_, data_ + mx_size_ - 1, newData);
+    delete[] data_;
     data_ = newData;
     mx_size_ = newSize;
 }

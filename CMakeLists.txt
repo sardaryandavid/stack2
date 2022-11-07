@@ -1,7 +1,7 @@
 # to launch: 
 # cd build
 # cmake ..
-# cmake --build .config Release
+# cmake --build . config Release
 
 cmake_minimum_required(VERSION 3.13)
 project(Stack VERSION 1.0 LANGUAGES CXX)
@@ -26,6 +26,7 @@ target_link_libraries(${TEST} gtest pthread)
 # To add:
 # cmake -DADD_SANITAIZER=ON ..
 # cmake --build .
+# make clang_format
 
 if(ADD_SANITAIZER)
     message ("Build with sanitaizers")
@@ -57,6 +58,7 @@ if(ADD_CLANG_FORMAT)
     add_custom_target(
         clang_format
         COMMAND clang-format
+        -style=file
         -i
         ${ALL_SOURCE_FILES}
     )
