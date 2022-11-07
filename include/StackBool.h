@@ -157,7 +157,7 @@ void containers::Stack<bool>::pop()
 {
     if (!this->isEmpty())
     {
-        data[size_ - 1] = 0;
+        data_[size_ - 1] = 0;
         --size_;
     }
 }
