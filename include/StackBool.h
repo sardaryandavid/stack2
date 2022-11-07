@@ -156,7 +156,10 @@ void containers::Stack<bool>::push(const uint8_t &val)
 void containers::Stack<bool>::pop()
 {
     if (!this->isEmpty())
+    {
+        data[size_ - 1] = 0;
         --size_;
+    }
 }
 
 void containers::Stack<bool>::resize(size_t newSize)
